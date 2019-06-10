@@ -1,11 +1,10 @@
 import sqlite3
 from ordenamiento import *
-from tkinter import *
 
-def nuevo_piloto(name,pais,escudo,temporada):
+def nuevo_piloto():
     puntos=0
     #crear los datos del nuevo piloto
-    #name=input("Ingrese el nombre del piloto:")
+    name=input("Ingrese el nombre del piloto:")
     #Leer los datos de los pilotos ya existentes
     miconexion=sqlite3.connect("InfoPilotos")
     micursor=miconexion.cursor()
@@ -14,64 +13,21 @@ def nuevo_piloto(name,pais,escudo,temporada):
     #Comprobar que el piloto no esta registrado
     for linea in check:
         if(linea[0]==name):
-            error=Tk()
-            error.title("Mensaje")
-            error.resizable(False,False)
-            error.iconbitmap("cuervo.ico")
-            error.geometry("250x120")
-            #error.config(bg="blue")
-            error.config(bd=15)
-            error.config(relief="sunken")
-            texterror=Label(error,text="El piloto ya existe",font=("Arial",13))
-            texterror.place(x=45,y=15)
-            def again():
-                nuevo()
-                error.destroy()
-            def Home():
-                nuevo()
-                error.destroy()
-            botones=Frame(error)
-            botones.pack(side="bottom")
-            botonagain=Button(botones,text="Volver a intentar",command=again)
-            botonagain.pack(side="left")
-            botonquit=Button(botones,text="volver al inicio",command=Home)
-            botonquit.pack(side="right")
-            error.mainloop()
-            print("El piloto ya esta registrado")
-            #return nuevo()
+            return print("El piloto ya esta registrado")
         else:
             existe=False
     miconexion.commit
     miconexion.close
     if(existe==False): #registar nuevo piloto
-        #pais=input("Ingrese el pais del piloto:")
-        #escudo=input("Ingrese la escuderia a la que pertenece:")
-        #temporada=input("ingrese la temporada en la que participa el piloto:")
+        pais=input("Ingrese el pais del piloto:")
+        escudo=input("Ingrese la escuderia a la que pertenece:")
+        temporada=input("ingrese la temporada en la que participa el piloto:")
         datos=[name,pais,escudo,puntos,temporada]
-        """
         miconexion=sqlite3.connect("InfoPilotos")
         micursor=miconexion.cursor()
         micursor.execute("INSERT INTO pilotos VALUES(?,?,?,?,?)",datos)
         miconexion.commit()
         miconexion.close()
-        """
-        error=Tk()
-        error.title("Mensaje")
-        error.resizable(False,False)
-        error.iconbitmap("cuervo.ico")
-        error.geometry("300x120")
-            #error.config(bg="blue")
-        error.config(bd=15)
-        error.config(relief="sunken")
-        texterror=Label(error,text="El piloto se registro correctamente",font=("Arial",13))
-        texterror.place(x=10,y=15)
-        def Close():
-            error.destroy()
-        botones=Frame(error)
-        botones.pack(side="bottom")
-        botonagain=Button(botones,text="Cerrar",command=Close)
-        botonagain.pack()
-        error.mainloop()
         print("Piloto registrado")
     else:
         print("error")
@@ -95,8 +51,8 @@ def clasificacion():
     miconexion.close()
 
 
-def puntos(name,victorias,derrotas,canceladas,podio,total): #Aritmetica de victorias,derrotas,canceladas para el puntaje
-    #name=input("Ingrese el nombre del piloto:")
+def puntos(): #Aritmetica de victorias,derrotas,canceladas para el puntaje
+    name=input("Ingrese el nombre del piloto:")
     existe=0
     existe2=0
     #Comprobar si el piloto existe
@@ -113,29 +69,12 @@ def puntos(name,victorias,derrotas,canceladas,podio,total): #Aritmetica de victo
     miconexion.close
     if(existe==0): #El piloto esta ya en la base de datos
         print("El piloto no existe")
-        error=Tk()
-        error.title("Mensaje")
-        error.resizable(False,False)
-        error.iconbitmap("cuervo.ico")
-        error.geometry("200x105")
-                #error.config(bg="blue")
-        error.config(bd=15)
-        error.config(relief="sunken")
-        texterror=Label(error,text="El piloto no existe",font=("Arial",13))
-        texterror.place(x=20,y=15)
-        def Close():
-            error.destroy()
-        botones=Frame(error)
-        botones.pack(side="bottom")
-        botonagain=Button(botones,text="Cerrar",command=Close)
-        botonagain.pack()
-        error.mainloop()
     elif(existe==1): #registar nuevo piloto
-        #victorias=int(input("Ingrese la cantidad de victorias del piloto:"))
-        #derrotas=int(input("Ingrese la cantidad de derrotas del piloto:"))
-        #canceladas=int(input("Ingrese la cantidad de carreras abandonadas:"))
-        #podio=int(input("Ingrese la cantidad que ha quedado de segundo o tercero:"))
-        #total=int(input("Ingrese la cantidad de carreras en las que ha participado el piloto:"))
+        victorias=int(input("Ingrese la cantidad de victorias del piloto:"))
+        derrotas=int(input("Ingrese la cantidad de derrotas del piloto:"))
+        canceladas=int(input("Ingrese la cantidad de carreras abandonadas:"))
+        podio=int(input("Ingrese la cantidad que ha quedado de segundo o tercero:"))
+        total=int(input("Ingrese la cantidad de carreras en las que ha participado el piloto:"))
         RGP= int(((victorias+derrotas)/(total-canceladas))*100)
         REP= int(((victorias)/(total-canceladas))*100)
         #IGE= int((victorias/total)) para la escuderia
@@ -161,47 +100,12 @@ def puntos(name,victorias,derrotas,canceladas,podio,total): #Aritmetica de victo
             micursor.execute("UPDATE escuderia SET victorias=(?),derrotas=(?),abandonadas=(?),podio=(?),total_carreras=(?),RGP=(?),REP=(?),IGE=(?) WHERE name=(?)",datos)
             miconexion.commit()
             miconexion.close()
-            error=Tk()
-            error.title("Mensaje")
-            error.resizable(False,False)
-            error.iconbitmap("cuervo.ico")
-            error.geometry("300x120")
-                #error.config(bg="blue")
-            error.config(bd=15)
-            error.config(relief="sunken")
-            texterror=Label(error,text="Datos correctamente actualizados",font=("Arial",13))
-            texterror.place(x=10,y=15)
-            def Close():
-                error.destroy()
-            botones=Frame(error)
-            botones.pack(side="bottom")
-            botonagain=Button(botones,text="Cerrar",command=Close)
-            botonagain.pack()
-            error.mainloop()
         elif(existe2==0): #para agregarlo a la otra base de datos si aun no lo esta
             miconexion=sqlite3.connect("Escuderia")
             micursor=miconexion.cursor()
             micursor.execute("INSERT INTO escuderia VALUES(?,?,?,?,?,?,?,?,?,?)",datos2)
             miconexion.commit()
             miconexion.close()
-            error=Tk()
-            error.title("Mensaje")
-            error.resizable(False,False)
-            error.iconbitmap("cuervo.ico")
-            error.geometry("275x120")
-                #error.config(bg="blue")
-            error.config(bd=15)
-            error.config(relief="sunken")
-            texterror=Label(error,text="Datos correctamente inscritos",font=("Arial",13))
-            texterror.place(x=10,y=15)
-            def Close():
-                error.destroy()
-            botones=Frame(error)
-            botones.pack(side="bottom")
-            botonagain=Button(botones,text="Cerrar",command=Close)
-            botonagain.pack()
-            error.mainloop()
-            
             
             
         
@@ -288,4 +192,3 @@ def change_temporada(name,temporada):
     miconexion.commit()
     miconexion.close()
     print("La temporada del piloto:",name,"fue cambiado a",temporada)
-    
