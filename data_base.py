@@ -26,14 +26,14 @@ def nuevo_piloto(name,pais,escudo,temporada):
             texterror.place(x=45,y=15)
             def again():
                 error.destroy()
-            def Home():
-                error.destroy()
+            #def Home():
+                #error.destroy()
             botones=Frame(error)
             botones.pack(side="bottom")
-            botonagain=Button(botones,text="Volver a intentar",command=again)
-            botonagain.pack(side="left")
-            botonquit=Button(botones,text="volver al inicio",command=Home)
-            botonquit.pack(side="right")
+            botonagain=Button(botones,text="Cerrar",command=again)
+            botonagain.pack()
+           #botonquit=Button(botones,text="volver al inicio",command=Home)
+            #botonquit.pack(side="right")
             error.mainloop()
             return print("El piloto ya esta registrado")
             
