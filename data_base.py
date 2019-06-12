@@ -25,10 +25,8 @@ def nuevo_piloto(name,pais,escudo,temporada):
             texterror=Label(error,text="El piloto ya existe",font=("Arial",13))
             texterror.place(x=45,y=15)
             def again():
-                nuevo()
                 error.destroy()
             def Home():
-                nuevo()
                 error.destroy()
             botones=Frame(error)
             botones.pack(side="bottom")
@@ -37,8 +35,8 @@ def nuevo_piloto(name,pais,escudo,temporada):
             botonquit=Button(botones,text="volver al inicio",command=Home)
             botonquit.pack(side="right")
             error.mainloop()
-            print("El piloto ya esta registrado")
-            #return nuevo()
+            return print("El piloto ya esta registrado")
+            
         else:
             existe=False
     miconexion.commit
@@ -48,13 +46,11 @@ def nuevo_piloto(name,pais,escudo,temporada):
         #escudo=input("Ingrese la escuderia a la que pertenece:")
         #temporada=input("ingrese la temporada en la que participa el piloto:")
         datos=[name,pais,escudo,puntos,temporada]
-        """
         miconexion=sqlite3.connect("InfoPilotos")
         micursor=miconexion.cursor()
         micursor.execute("INSERT INTO pilotos VALUES(?,?,?,?,?)",datos)
         miconexion.commit()
         miconexion.close()
-        """
         error=Tk()
         error.title("Mensaje")
         error.resizable(False,False)
@@ -76,9 +72,10 @@ def nuevo_piloto(name,pais,escudo,temporada):
     else:
         print("error")
 
-def clasificacion():
+def clasificacion():# de menor a mayor el RGP
     listabase=[]
     acomodo=[]
+    listacomodada=[]
     miconexion=sqlite3.connect("InfoPilotos")
     micursor=miconexion.cursor()
     micursor.execute("SELECT * FROM pilotos")
@@ -90,9 +87,74 @@ def clasificacion():
         acomodo.append(res)
     acomodo.reverse()
     for fin in acomodo:#para printear las clasificaciones en consola
-        print(fin)
+        print(fin[:5])
+        listacomodada.append(fin[:5])
     miconexion.commit()
     miconexion.close()
+    return listacomoda
+
+
+def clasificacion2():# de mayor a menor el RGP
+    listabase=[]
+    listacomodada=[]
+    miconexion=sqlite3.connect("InfoPilotos")
+    micursor=miconexion.cursor()
+    micursor.execute("SELECT * FROM pilotos")
+    lista=micursor.fetchall()
+    for linea in lista:
+        linea=list(linea)
+        listabase.append(linea)
+    for res in clasi(listabase):
+        print(res[:5])
+        listacomodada.append(res[:5])
+    miconexion.commit()
+    miconexion.close()
+    return listacomoda
+
+def clasificacion3():# de mayor a menor el REP
+    listabase=[]
+    listacomodada=[]
+    miconexion=sqlite3.connect("InfoPilotos")
+    micursor=miconexion.cursor()
+    micursor.execute("SELECT * FROM pilotos")
+    lista=micursor.fetchall()
+    for linea in lista:
+        linea=list(linea)
+        temp=linea[3]
+        linea[3]=linea[5]
+        linea[5]=temp
+        listabase.append(linea)
+    for res in clasi(listabase):
+        print(res[:5])
+        listacomodada.append(res[:5])
+    miconexion.commit()
+    miconexion.close()
+    return listacomoda
+
+
+def clasificacion4():#de menor a mayor el REP
+    listabase=[]
+    acomodo=[]
+    listacomodada=[]
+    miconexion=sqlite3.connect("InfoPilotos")
+    micursor=miconexion.cursor()
+    micursor.execute("SELECT * FROM pilotos")
+    lista=micursor.fetchall()
+    for linea in lista:
+        linea=list(linea)
+        temp=linea[3]
+        linea[3]=linea[5]
+        linea[5]=temp
+        listabase.append(linea)
+    for res in clasi(listabase):
+        acomodo.append(res)
+    acomodo.reverse()
+    for check in acomodo:
+        print(check[:5])
+        listacomodada.append(check[:5])
+    miconexion.commit()
+    miconexion.close()
+    return listacomoda
 
 
 def puntos(name,victorias,derrotas,canceladas,podio,total): #Aritmetica de victorias,derrotas,canceladas para el puntaje
@@ -207,11 +269,11 @@ def puntos(name,victorias,derrotas,canceladas,podio,total): #Aritmetica de victo
         
 
     
-def puntuacion(puntaje,nick):#Para cambiar el puntaje en la base de datos
+def puntuacion(puntaje,rep,nick):#Para cambiar el puntaje en la base de datos
     miconexion=sqlite3.connect("InfoPilotos")
     micursor=miconexion.cursor()
-    datos=[puntaje,nick]
-    micursor.execute("UPDATE pilotos SET puntuacion=(?) WHERE nombre_piloto=(?)",datos)
+    datos=[puntaje,rep,nick]
+    micursor.execute("UPDATE pilotos SET puntuacion=(?),REP=(?) WHERE nombre_piloto=(?)",datos)
     miconexion.commit()
     miconexion.close()
 
@@ -244,6 +306,22 @@ def escuderia_info(escuderia):
     miconexion.close()
     
 
+ #para el test drive
+def elegir_piloto(name):
+    datos=[name]
+    miconexion=sqlite3.connect("InfoPilotos")
+    micursor=miconexion.cursor()
+    micursor.execute("SELECT * FROM pilotos WHERE nombre_piloto=(?)",datos)
+    check=micursor.fetchall()
+    check=list(check[0])
+    miconexion.commit()
+    miconexion.close()
+    nombre=check[0]
+    pais=check[1]
+    escuderia=check[2]
+    puntos=check[3]
+    temporada=check[4]
+    print(check)
 
 
 #para sumar las victorias y total de carreras para la informacion de escuderia
@@ -288,4 +366,16 @@ def change_temporada(name,temporada):
     miconexion.commit()
     miconexion.close()
     print("La temporada del piloto:",name,"fue cambiado a",temporada)
+
+
+#Funcion para eliminar un piloto
+def eliminar_piloto(name):
+    datos=[name]
+    miconexion=sqlite3.connect("InfoPilotos")
+    micursor=miconexion.cursor()
+    micursor.execute("DELETE FROM pilotos WHERE nombre_piloto=(?)",datos)
+    miconexion.commit()
+    miconexion.close()
+    
+    
     
