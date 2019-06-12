@@ -91,7 +91,7 @@ def clasificacion():# de menor a mayor el RGP
         listacomodada.append(fin[:5])
     miconexion.commit()
     miconexion.close()
-    return listacomoda
+    return listacomodada
 
 
 def clasificacion2():# de mayor a menor el RGP
@@ -109,7 +109,7 @@ def clasificacion2():# de mayor a menor el RGP
         listacomodada.append(res[:5])
     miconexion.commit()
     miconexion.close()
-    return listacomoda
+    return listacomodada
 
 def clasificacion3():# de mayor a menor el REP
     listabase=[]
@@ -129,7 +129,7 @@ def clasificacion3():# de mayor a menor el REP
         listacomodada.append(res[:5])
     miconexion.commit()
     miconexion.close()
-    return listacomoda
+    return listacomodada
 
 
 def clasificacion4():#de menor a mayor el REP
@@ -154,7 +154,7 @@ def clasificacion4():#de menor a mayor el REP
         listacomodada.append(check[:5])
     miconexion.commit()
     miconexion.close()
-    return listacomoda
+    return listacomodada
 
 
 def puntos(name,victorias,derrotas,canceladas,podio,total): #Aritmetica de victorias,derrotas,canceladas para el puntaje
