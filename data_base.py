@@ -4,6 +4,7 @@ from tkinter import *
 
 def nuevo_piloto(name,pais,escudo,temporada):
     puntos=0
+    REP=0
     #crear los datos del nuevo piloto
     #name=input("Ingrese el nombre del piloto:")
     #Leer los datos de los pilotos ya existentes
@@ -45,10 +46,10 @@ def nuevo_piloto(name,pais,escudo,temporada):
         #pais=input("Ingrese el pais del piloto:")
         #escudo=input("Ingrese la escuderia a la que pertenece:")
         #temporada=input("ingrese la temporada en la que participa el piloto:")
-        datos=[name,pais,escudo,puntos,temporada]
+        datos=[name,pais,escudo,puntos,temporada,REP]
         miconexion=sqlite3.connect("InfoPilotos")
         micursor=miconexion.cursor()
-        micursor.execute("INSERT INTO pilotos VALUES(?,?,?,?,?)",datos)
+        micursor.execute("INSERT INTO pilotos VALUES(?,?,?,?,?,?)",datos)
         miconexion.commit()
         miconexion.close()
         error=Tk()
