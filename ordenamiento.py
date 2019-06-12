@@ -33,12 +33,12 @@ def clasfin(listabase,listaord,fin,cont,contm,listanew):
 #sacar los numeros para hacer una lista para acomodar segun puntaje(lista1)
 def lista1_aux(x,cont,fin,listnew):
     if(cont==fin):
-        if(x[cont][3]>0):
+        if(x[cont][3]>=0):
             listnew.append(x[cont][3])
             return listnew
         else:
             return'check error'
-    elif(x[cont][3]>0):
+    elif(x[cont][3]>=0):
         listnew.append(x[cont][3])
         return lista1_aux(x,cont+1,fin,listnew)
     else:
