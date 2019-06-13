@@ -23,6 +23,7 @@ def clasfin(listabase,listaord,fin,cont,contm,listanew):
             return clasfin(listabase,listaord,fin,cont+1,contm,listanew)
     elif(listabase[cont][3]==listaord[contm]):
         listanew.append(listabase[cont])
+        listabase.remove(listabase[cont])
         return clasfin(listabase,listaord,fin,0,contm+1,listanew)
     else:
         return clasfin(listabase,listaord,fin,cont+1,contm,listanew)
