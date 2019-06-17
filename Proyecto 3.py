@@ -170,18 +170,28 @@ def Ven1(logo,patro,Esc,m,geo):
         cell=Entry(pos,width=10)
         cell.grid(row=0,column=0)
         cell.insert(0,"Nombre")
+        cell.config(state="readonly")
+        cell.config(bg="white")
         cell=Entry(pos,width=10)
         cell.grid(row=0,column=1)
         cell.insert(0,"Pais")
+        cell.config(state="readonly")
+        cell.config(bg="white")
         cell=Entry(pos,width=10)
         cell.grid(row=0,column=2)
         cell.insert(0,"Escuderia")
+        cell.config(state="readonly")
+        cell.config(bg="white")
         cell=Entry(pos,width=10)
         cell.grid(row=0,column=3)
         cell.insert(0,"Puntuacion")
+        cell.config(state="readonly")
+        cell.config(bg="white")
         cell=Entry(pos,width=10)
         cell.grid(row=0,column=4)
         cell.insert(0,"Temporada")
+        cell.config(state="readonly")
+        cell.config(bg="white")
         from data_base import clasificacion
         i=0
         o=0
@@ -196,12 +206,18 @@ def Ven1(logo,patro,Esc,m,geo):
                 i+=1
                 o=0
                 c+=1
+                cell.config(state="readonly")
+                cell.config(bg="white")
+            elif(i==10):
+                return "ready"
             else:
                 cell=Entry(pos,width=10)
                 cell.grid(row=c,column=o)
                 cell.insert(0,a[i][o])
                 i=i
                 o+=1
+                cell.config(state="readonly")
+                cell.config(bg="white")
          
         #Funcion para pedir los datos y agregar puntuacion
         def editar_piloto():
@@ -387,11 +403,17 @@ def Ven1(logo,patro,Esc,m,geo):
         c.create_text(710,82,text=nacionalidad)
         c.create_polygon(400,400,100,650,700,650,fill="red")
         c.create_rectangle(700,250,780,290,fill="black")
-        celeb=Button(test,text="Celebración",command=celebra).place(x=705,y=260)
         c.create_rectangle(700,300,780,340,fill="black")
-        esp=Button(test,text="Especial",command=especial).place(x=705,y=310)
         poder=Entry(test)
         poder.place(x=338,y=490)
+        global ledstraseras
+        global ledsfrontales
+        global direccionalizq
+        global direccionalder
+        ledstraseras=0
+        ledsfrontales=0
+        direccionalizq=0
+        direccionalder=0
         def Pwm():
             p=""
             p+="pwm:"+poder.get()+";"
@@ -399,13 +421,87 @@ def Ven1(logo,patro,Esc,m,geo):
             myCar.send(p)  
         pwm=Button(test,text="Pwm",command=Pwm).place(x=380,y=520) 
         c.place(x=0,y=0)
-    def celebra():
-        from telemetry import root,get_log,send,sendShowID,read
-    def especial():
-        p=""
-        p+="patron:especial;"
-        from telemetry import myCar
-        myCar.send(p)
+        def celebra():
+            print("celebracion")
+            from telemetry import root,get_log,send,sendShowID,read
+        def especial():
+            print("especial")
+            p=""
+            p+="patron:especial;"
+            from telemetry import myCar
+            myCar.send(p)
+        def leds_traseras():
+            global ledstraseras
+            if(ledstraseras==0):
+                print("Leds traseras encendidas")
+                ledstraseras=1
+                from telemetry import myCar
+                p="lb:1;"
+                myCar.send(p)
+            elif(ledstraseras==1):
+                print("Leds traseras apagadas")
+                ledstraseras=0
+                from telemetry import myCar
+                p="lb:0;"
+                myCar.send(p)
+            else:
+                print("revisar leds traseras")
+        def leds_frontales():
+            global ledsfrontales
+            if(ledsfrontales==0):
+                print("Leds frontales encendidas")
+                ledsfrontales=1
+                from telemetry import myCar
+                p="lf:1;"
+                myCar.send(p)
+            elif(ledsfrontales==1):
+                print("Leds frontales apagadas")
+                ledfrontales=0
+                from telemetry import myCar
+                p="lf:0;"
+                myCar.send(p)
+            else:
+                print("revisar leds frontales")
+        def leds_izquierda():
+            global direccionalizq
+            if(direccionalizq==0):
+                print("Led izquierda encendida")
+                direccionalizq=1
+                from telemetry import myCar
+                p="ll:1;"
+                myCar.send(p)
+            elif(direccionalizq==1):
+                print("Led izquierda apagada")
+                direccionalizq=0
+                from telemetry import myCar
+                p="ll:0;"
+                myCar.send(p)
+            else:
+                print("revisar led izquierda")
+        def leds_derecha():
+            global direccionalder
+            if(direccionalder==0):
+                print("Led derecha encendida")
+                direccionalder=1
+                from telemetry import myCar
+                p="lr:1;"
+                myCar.send(p)
+            elif(direccionalder==1):
+                print("Led derecha apagada")
+                direccionalder=0
+                from telemetry import myCar
+                p="lr:0;"
+                myCar.send(p)
+            else:
+                print("revisar led derecha")
+                
+            
+        traseras=Button(test,text="Luces traseras",command=leds_traseras).place(x=350,y=570)
+        frontales=Button(test,text="Luces frontales",command=leds_frontales).place(x=350,y=410)
+        izquierda=Button(test,text="Direcional izquierda",command=leds_izquierda).place(x=200,y=500)
+        derecha=Button(test,text="Direcional derecha",command=leds_derecha).place(x=500,y=500)
+        celeb=Button(test,text="Celebración",command=celebra).place(x=705,y=260)
+        esp=Button(test,text="Especial",command=especial).place(x=705,y=310)
     
     cambEsc=Button(ven1,text="Cambiar Logo",command=cambiar).place(x=30,y=400)
     cambPatro=Button(ven1,text="Cambiar Patrocinadores",command=print("Q")).place(x=500,y=400)
