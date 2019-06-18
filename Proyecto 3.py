@@ -67,7 +67,7 @@ def Ven1(logo,patro,Esc,m,geo):
     esc=Label(ven1,text=Esc).place(x=350,y=0)
     temp=Label(ven1,text="Temporada: 2019").place(x=0,y=25)
     geografia=Label(ven1,text=geo).place(x=0,y=50)
-    est=Label(ven1,text="Estado del vehiculo: ").place(x=300,y=25)
+    est=Label(ven1,text="Estado del vehiculo: Disponible").place(x=300,y=25)
     ind=Label(ven1,text=IGE).place(x=525,y=25)
     log=Label(ven1,text="Logo").place(x=75,y=100)
     logo=logo.subsample(2,2)
@@ -323,13 +323,17 @@ def Ven1(logo,patro,Esc,m,geo):
                 eliminarpiloto=Button(edit,text="Eliminar piloto",command=eliminar_piloto).place(x=30,y=190)
 
         def nuevo():
+            pilotos=pilotos_all()
             n=Tk()
             n.title("Ingrese sus Datos")
             n.geometry("500x500")
             n.config(bd=15)
             n.config(relief="sunken")
             nombre=Label(n,text="Nombre del piloto:").place(x=20,y=20)
-            nom=Entry(n)
+            nom=ttk.Combobox(n)
+            nom['values']= pilotos
+            nom.current(0)
+            nom.config(state="readonly")
             nom.place(x=20,y=45)
             Victorias=Label(n,text="Victorias del piloto:").place(x=20,y=70)
             Vic=Entry(n)
