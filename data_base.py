@@ -47,9 +47,15 @@ def nuevo_piloto(name,pais,escudo,temporada):
         #escudo=input("Ingrese la escuderia a la que pertenece:")
         #temporada=input("ingrese la temporada en la que participa el piloto:")
         datos=[name,pais,escudo,puntos,temporada,REP]
+        datos2=[name,escudo,0,0,0,0,0,0,0,0]
         miconexion=sqlite3.connect("InfoPilotos")
         micursor=miconexion.cursor()
         micursor.execute("INSERT INTO pilotos VALUES(?,?,?,?,?,?)",datos)
+        miconexion.commit()
+        miconexion.close()
+        miconexion=sqlite3.connect("Escuderia")
+        micursor=miconexion.cursor()
+        micursor.execute("INSERT INTO escuderia VALUES(?,?,?,?,?,?,?,?,?,?)",datos2)
         miconexion.commit()
         miconexion.close()
         error=Tk()
@@ -323,7 +329,7 @@ def elegir_piloto(name):
     escuderia=check[2]
     puntos=check[3]
     temporada=check[4]
-    print(check)
+    return check
 
 def pilotos_escuderia(escuderia):
     datos=[escuderia]
@@ -331,6 +337,20 @@ def pilotos_escuderia(escuderia):
     miconexion=sqlite3.connect("InfoPilotos")
     micursor=miconexion.cursor()
     micursor.execute("Select nombre_piloto FROM pilotos WHERE escuderia=(?)",datos)
+    check=micursor.fetchall()
+    for linea in check:
+        #linea=linea[0]
+        #linea=str(linea)
+        pilotos.append(linea)
+    miconexion.commit()
+    miconexion.close()
+    return pilotos
+
+def pilotos_all():
+    pilotos=[]
+    miconexion=sqlite3.connect("InfoPilotos")
+    micursor=miconexion.cursor()
+    micursor.execute("Select nombre_piloto FROM pilotos")
     check=micursor.fetchall()
     for linea in check:
         #linea=linea[0]
@@ -391,7 +411,7 @@ def change_temporada(name,temporada):
 
 
 #Funcion para eliminar un piloto
-def eliminar_piloto(name):
+def eliminaar_piloto(name):
     datos=[name]
     miconexion=sqlite3.connect("InfoPilotos")
     micursor=miconexion.cursor()
