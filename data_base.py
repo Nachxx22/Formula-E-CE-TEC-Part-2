@@ -47,9 +47,15 @@ def nuevo_piloto(name,pais,escudo,temporada):
         #escudo=input("Ingrese la escuderia a la que pertenece:")
         #temporada=input("ingrese la temporada en la que participa el piloto:")
         datos=[name,pais,escudo,puntos,temporada,REP]
+        datos2=[name,escudo,0,0,0,0,0,0,0,0]
         miconexion=sqlite3.connect("InfoPilotos")
         micursor=miconexion.cursor()
         micursor.execute("INSERT INTO pilotos VALUES(?,?,?,?,?,?)",datos)
+        miconexion.commit()
+        miconexion.close()
+        miconexion=sqlite3.connect("Escuderia")
+        micursor=miconexion.cursor()
+        micursor.execute("INSERT INTO escuderia VALUES(?,?,?,?,?,?,?,?,?,?)",datos2)
         miconexion.commit()
         miconexion.close()
         error=Tk()
